@@ -195,4 +195,57 @@ class TestUserRegistrationForm(TestCase):
         else:
             logger.info(f'Completed Test #7 - {self._test_name}')
 
+    def test_last_name_with_incorrect_capitalization(self) -> None:
+        self._test_name = 'Test Last Name With Incorrect Capitalization'
+        try:
+            self._test_user_registration_form = UserRegistrationForm(
+                data={
+                    'username'             : 'test_user',
+                    'first_name'           : 'Raymond',
+                    'last_name'            : 'sUTTon',
+                    'email'                : 'test@test.com',
+                    'password'             : 'abc12321cba',
+                    'password_confirmation': 'abc12321cba'
+                }
+            )
+
+            self.assertTrue(self._test_user_registration_form.is_valid())
+
+            self.assertEqual(
+                self._test_user_registration_form.cleaned_data['last_name'],
+                'Sutton'
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #8 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #8 - {self._test_name}')
+
+    def test_last_name_is_required(self) -> None:
+        self._test_name = 'Test Last Name Is Required'
+        try:
+            self._test_user_registration_form = UserRegistrationForm(
+                data={
+                    'username'             : 'test_user',
+                    'first_name'           : 'Raymond',
+                    'last_name'            : '',
+                    'email'                : 'test@test.com',
+                    'password'             : 'abc12321cba',
+                    'password_confirmation': 'abc12321cba'
+                }
+            )
+
+            self.assertFalse(self._test_user_registration_form.is_valid())
+
+            self.assertEqual(
+                self._test_user_registration_form.errors['last_name'],
+                ['Your last name must be at least one character in length.']
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #9 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #9 - {self._test_name}')
+            
+
 
