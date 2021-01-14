@@ -1,0 +1,15 @@
+1)  sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx
+2)  sudo service postgresql start
+3)  sudo -u postgres psql
+4)  CREATE DATABASE NAME_HERE;
+5)  CREATE USER USER_NAME WITH PASSWORD 'PASSWORD';
+6)  ALTER ROLE rsutton SET client_encoding TO 'utf8';
+7)  ALTER ROLE rsutton SET default_transaction_isolation TO 'read committed';
+8)  ALTER ROLE rsutton SET timezone TO 'UTC';
+9)  ALTER ROLE rsutton CREATEDB;
+10) activate virtualenv
+11) pipenv install psycops2
+12) update database settings in settings.py for information used to create PostGres database
+13) If needed, add your custom user model
+14) ./manage.py makemigrations
+15) ./manage.py migrate
