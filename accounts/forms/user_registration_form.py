@@ -10,8 +10,15 @@ class UserRegistrationForm(forms.ModelForm):
     The UserRegistrationForm handles storing the user's
     basic information when signing up for the application.
     """
+    
+    password = forms.CharField(
+        label='Password',
+        required=True,
+        widget=forms.PasswordInput()
+    )
 
     password_confirmation = forms.CharField(
+        label='Password Confirmation',
         required=True,
         widget=forms.PasswordInput()
     )
@@ -29,7 +36,6 @@ class UserRegistrationForm(forms.ModelForm):
             'first_name',
             'last_name',
             'email',
-            'password',
         )
 
     def clean_username(self) -> str:
@@ -81,3 +87,10 @@ class UserRegistrationForm(forms.ModelForm):
                 raise ValidationError(_('Your password inputs do not match. Please re-enter your password information.'))
 
         return password_confirmation
+
+    def save(self, commit: bool=True) -> User:
+        user: User = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user

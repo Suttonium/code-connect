@@ -19,7 +19,7 @@ class UserRegistrationView(View):
             }
         )
 
-    def get(self, request: WSGIRequest, *args, **kwargs: dict) -> HttpResponse:
+    def get(self, request: WSGIRequest, *args: tuple, **kwargs: dict) -> HttpResponse:
         return self._build_default_context(request=request)
 
     def post(self, request: WSGIRequest, *args: tuple, **kwargs: dict) -> HttpResponse:
@@ -27,7 +27,7 @@ class UserRegistrationView(View):
 
         if self.form.is_valid():
             self.form.save()
-            return HttpResponse('Successfully Registered')
+            return redirect('accounts:login')
         else:
             return self._build_default_context(request=request)
 
