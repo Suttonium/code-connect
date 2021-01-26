@@ -10,8 +10,8 @@ logger = logging.getLogger('accounts.tests')
 
 
 class TestUserRegistrationForm(TestCase):
-    _test_user_registration_form : Optional[UserRegistrationForm] = None
-    _test_name                   : Optional[str]                  = None
+    _test_user_registration_form: Optional[UserRegistrationForm] = None
+    _test_name                  : Optional[str]                  = None
 
     def test_password_one_and_password_two_do_not_match(self) -> None:
         self._test_name = 'Test Password One and Password Two Do Not Match'

@@ -1,1 +1,11 @@
-<h1>HOME PAGE, Welcome {{ user }}</h1>
+{% if user.is_authenticated %}
+
+  <h1>HOME PAGE, Welcome {{ user }}</h1>
+  <a href="{% url 'accounts:profile_detail' username=user.username %}">Profile Page</a>
+
+{% else %}
+
+  
+
+{% endif %}
+

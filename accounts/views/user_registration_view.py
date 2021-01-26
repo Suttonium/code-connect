@@ -1,5 +1,5 @@
-from django.http               import HttpResponse
 from django.core.handlers.wsgi import WSGIRequest
+from django.http               import HttpResponse
 from django.shortcuts          import render, redirect
 from django.views              import View
 from typing                    import Optional
@@ -8,8 +8,7 @@ from accounts.forms.user_registration_form import UserRegistrationForm
 
 
 class UserRegistrationView(View):
-
-    form : Optional[UserRegistrationForm] = None
+    form: Optional[UserRegistrationForm] = None
 
     def _build_default_context(self, request: WSGIRequest) -> HttpResponse:
         self.form = UserRegistrationForm()
@@ -30,5 +29,7 @@ class UserRegistrationView(View):
             return redirect('accounts:login')
         else:
             return self._build_default_context(request=request)
+
+UserRegistrationView = UserRegistrationView.as_view()
 
 

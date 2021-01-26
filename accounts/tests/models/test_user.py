@@ -18,7 +18,7 @@ class TestUser(TestCase):
     logging success and failure messages.
     """
 
-    _test_user : Optional[User] = None
+    _test_user: Optional[User] = None
 
     def setUp(self) -> None:
         """

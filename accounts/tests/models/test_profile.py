@@ -11,7 +11,7 @@ logger = logging.getLogger('accounts.tests')
 
 
 class TestProfile(TestCase):
-    _test_profile : Optional[Profile] = None
+    _test_profile: Optional[Profile] = None
 
     def setUp(self) -> None:
         try:

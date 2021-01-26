@@ -10,8 +10,8 @@ logger = logging.getLogger('accounts.tests')
 
 class TestUserRegistrationView(TestCase):
 
-    _test_response : Optional[HttpResponse] = None
-    _test_name     : Optional[str]          = None
+    _test_response: Optional[HttpResponse] = None
+    _test_name    : Optional[str]          = None
     
     def test_get(self) -> None:
         self._test_name = 'Test Get Method For UserRegistrationView'
