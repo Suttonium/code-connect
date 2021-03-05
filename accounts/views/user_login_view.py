@@ -10,9 +10,12 @@ from accounts.models.user import User
 
 
 class UserLoginView(View):
+
     form: Optional[AuthenticationForm] = None
+    user: Optional[User]               = None
 
     def _build_default_context(self, request: WSGIRequest) -> HttpResponse:
+
         self.form = AuthenticationForm()
 
         return render(request, 'accounts/user_login_template.html', {
@@ -24,15 +27,16 @@ class UserLoginView(View):
         return self._build_default_context(request=request)
 
     def post(self, request: WSGIRequest, *args: tuple, **kwargs: dict) -> HttpResponse:
+
         self.form = AuthenticationForm(request.POST)
 
         username: str = request.POST['username']
         password: str = request.POST['password']
         
-        user: User = authenticate(username=username, password=password)
+        self.user = authenticate(username=username, password=password)
 
-        if user and user.is_active:
-            login(request, user)
+        if self.user:
+            login(request, self.user)
             return redirect('home')
         else:
             return self._build_default_context(request=request)

@@ -1,14 +1,17 @@
 from django.contrib.auth.backends import ModelBackend
 from django.core.handlers.wsgi    import WSGIRequest
+from typing                       import Optional
 
 from accounts.models.user import User
 
 
 class UsernameBackend(ModelBackend):
     """
-    The UsernameBackend class handles authentication
-    for a user when the use their username to log in.
+    The UsernameBackend class handles authentication for a user when the 
+    use their username to log in.
     """
+
+    user: Optional[User] = None
 
     def authenticate(self, request: WSGIRequest, **kwargs: dict) -> User:
         """
@@ -27,9 +30,9 @@ class UsernameBackend(ModelBackend):
         password: str = kwargs['password']
 
         try:
-            user: User = User.objects.get(username=username)
-            if user.check_password(password):
-                if not user.is_banned:
-                    return user
+            self.user = User.objects.get(username=username)
+            if self.user.check_password(password):
+                if not self.user.is_banned and self.user.is_active:
+                    return self.user
         except User.DoesNotExist:
             ...
