@@ -32,12 +32,11 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
-CUSTOM_APPLICATIONS = [
+CUSTOM_APPS = [
     'accounts.apps.AccountsConfig'
 ]
 
-THIRD_PARTY_APPLICATIONS = [
+THIRD_PARTY_APPS = [
 
 ]
 
@@ -48,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-] + CUSTOM_APPLICATIONS + THIRD_PARTY_APPLICATIONS
+] + CUSTOM_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -98,7 +97,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

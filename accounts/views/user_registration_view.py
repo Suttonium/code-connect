@@ -8,6 +8,7 @@ from accounts.forms.user_registration_form import UserRegistrationForm
 
 
 class UserRegistrationView(View):
+
     form: Optional[UserRegistrationForm] = None
 
     def _build_default_context(self, request: WSGIRequest) -> HttpResponse:
