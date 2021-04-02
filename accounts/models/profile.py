@@ -27,7 +27,6 @@ class Profile(TimeStamp):
         PREFER_NOT_TO_SAY = 'X'
 
 
-
     uuid = models.UUIDField(
         _('UUID'), 
         primary_key=True, 
@@ -47,16 +46,17 @@ class Profile(TimeStamp):
         default=GenderOptions.PREFER_NOT_TO_SAY
     )
 
-    def __str__(self):
-        """
-        Parameters:
-            None
+    friends = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='friends_list',
+        blank=True
+    )
 
-        Returns:
-            The desired string representation of the model for viewing
-            in the database.
-        """
-        return self.user.email
+    blocks = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='blocked_users',
+        blank=True
+    )
 
     class Meta:
         """
@@ -66,3 +66,17 @@ class Profile(TimeStamp):
         verbose_name          = _('Profile')
         verbose_name_plural   = _('Profiles')
         order_with_respect_to =   'user'
+
+    def __str__(self) -> str:
+        """
+        Parameters:
+            None
+
+        Returns:
+            The desired string representation of the model for viewing
+            in the database.
+        """
+        return f'Profile instance for {self.user.email}'
+
+    def get_friends(self):
+        return self.friends.all()

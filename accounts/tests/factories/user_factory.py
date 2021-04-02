@@ -22,8 +22,8 @@ class UserFactory(factory.django.DjangoModelFactory):
         model                = User
         django_get_or_create = (
             'username',
-            'email'
+            'email',
         )
 
     username = factory.Sequence(lambda n: 'user_%d' % n)
-    email    = faker.email()
+    email    = factory.Sequence(lambda n: 'user_%d@test.com' % n)

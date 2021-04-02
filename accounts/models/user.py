@@ -68,3 +68,18 @@ class User(AbstractUser):
         
         if not hasattr(self, 'profile'):
             Profile.objects.create(user=self)
+
+    @classmethod
+    def new_user(cls, *, email: str, username: str) -> models.base.ModelBase:
+        """
+        Parameters:
+            email    -> desired email for user creation
+            username -> desired username for user creation
+
+        Returns:
+            An instance of this class create through an ORM method call
+        """
+        return cls.objects.create(
+            email=email,
+            username=username,
+        )

@@ -13,7 +13,7 @@ logger = logging.getLogger('accounts.tests')
 
 class TestUser(TestCase):
     """
-    The UserTest class handles any necessary testing of the user model.
+    The TestUser class handles any necessary testing of the user model.
     This class is designed to handle incorrect and correct test results by
     logging success and failure messages.
     """
@@ -68,7 +68,7 @@ class TestUser(TestCase):
         equal to the user created in setUp.
         """
         try:
-            User.objects.create(
+            User.new_user(
                 email=self._test_user.email,
                 username='Test User #2'
             )

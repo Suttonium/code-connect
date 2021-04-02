@@ -16,7 +16,7 @@ class TestProfile(TestCase):
     def setUp(self) -> None:
         try:
             self._test_profile = ProfileFactory()
-        except AccountsException as error:
+        except Exception as error:
             logger.exception('Failed Test Profile Initialization')
             self.fail()
 

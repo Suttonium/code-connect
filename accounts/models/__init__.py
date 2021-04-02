@@ -1,2 +1,3 @@
-from .profile import Profile
-from .user    import User
+from .profile      import Profile
+from .relationship import Relationship
+from .user         import User
