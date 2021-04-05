@@ -83,3 +83,6 @@ class User(AbstractUser):
             email=email,
             username=username,
         )
+
+    def authenticate(self, *, password: str) -> models.base.ModelBase:
+        return self.check_password(password) and not self.is_banned and self.is_active

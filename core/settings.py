@@ -138,8 +138,7 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.username_backend.UsernameBackend',
-    'accounts.backends.email_backend.EmailBackend'
+    'accounts.backends.email_backend.AccountsBackend'
 ]
 
 LOGGING = {

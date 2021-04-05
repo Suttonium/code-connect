@@ -4,7 +4,7 @@ from django.conf              import settings
 from django.db                import models
 from django.utils.translation import ugettext_lazy as _
 
-from accounts.models.user   import User
+from accounts.exception     import AccountsException
 from core.models.time_stamp import TimeStamp
 
 
@@ -78,9 +78,21 @@ class Relationship(TimeStamp):
 
     def save(self, *args: tuple, **kwargs: dict):
         if self.sender == self.receiver:
-            # TODO raise an exception
-            ...
+            raise AccountsException
+
         super().save(*args, **kwargs)
+
+    @classmethod
+    def new_relationship(
+        cls,
+        *, 
+        sender: settings.AUTH_USER_MODEL,
+        receiver: settings.AUTH_USER_MODEL
+    ):
+        return cls.objects.create(
+            sender=sender,
+            receiver=receiver
+        )
     
     def accept(self) -> None:
         self.sender.friends.add(self.receiver)
