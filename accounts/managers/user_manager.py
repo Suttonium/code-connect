@@ -11,12 +11,51 @@ class UserManager(BaseUserManager):
     implemented in the UserQuerySet class.
     """
     
-    def get_queryset(self) -> UserQuerySet:
+    def create_user(self, *, username: str, email: str, password: str, **extra_fields: dict):
         """
         Parameters:
-            None
+            username       -> the username used during user creation
+            email          -> the email used during user creation
+            password       -> the password used during user creation
+            **extra_fields -> additional fields to be added by default
 
         Returns:
-            A UserQuerySet object used for any subsequent queries.
+            A user object that has been added to the database
         """
-        return UserQuerySet(self.model, using=self._db)
+        if not email:
+            raise ValueError('An email address must be supplied')
+
+        if not username:
+            raise ValuError('A username must be supplied')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username, 
+            **extra_fields
+        )
+        user.set_password(password)
+
+        user.save()
+        return user
+
+    def create_superuser(self, *, username: str, email: str, password: str, **extra_fields):
+        """
+        Parameters:
+            username       -> the username used during user creation
+            email          -> the email used during user creation
+            password       -> the password used during user creation
+            **extra_fields -> additional fields to be added by default
+
+        Returns:
+            A superuser object for admin access to the database
+        """
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+
+        return self.create_user(
+            username=username,
+            email=email,
+            password=password,
+            **extra_fields
+        )

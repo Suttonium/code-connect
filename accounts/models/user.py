@@ -1,3 +1,4 @@
+import logging
 import uuid
 
 from django.contrib.auth.models import AbstractUser
@@ -6,6 +7,8 @@ from django.utils.translation   import ugettext_lazy as _
 
 from accounts.managers.user_manager import UserManager
 from accounts.models.profile        import Profile
+
+logger = logging.getLogger('accounts')
 
 
 class User(AbstractUser):
@@ -34,6 +37,9 @@ class User(AbstractUser):
     )
 
     objects = UserManager()
+
+    USERNAME_FIELD  = 'email'
+    REQUIRED_FIELDS = ['username']
 
     class Meta:
         """
@@ -64,10 +70,14 @@ class User(AbstractUser):
         Returns:
             None
         """
+        logger.info('Started User.save')
+
         super().save(*args, **kwargs)
         
         if not hasattr(self, 'profile'):
-            Profile.objects.create(user=self)
+            Profile.new_profile(user=self)
+
+        logger.info('Completed User.save')
 
     @classmethod
     def new_user(cls, *, email: str, username: str) -> models.base.ModelBase:

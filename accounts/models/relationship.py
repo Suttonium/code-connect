@@ -1,3 +1,4 @@
+import logging
 import uuid
 
 from django.conf              import settings
@@ -6,6 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from accounts.exception     import AccountsException
 from core.models.time_stamp import TimeStamp
+
+logger = logging.getLogger('accounts')
 
 
 class Relationship(TimeStamp):
@@ -77,10 +80,15 @@ class Relationship(TimeStamp):
         verbose_name_plural = _('Relationships')
 
     def save(self, *args: tuple, **kwargs: dict):
+        logger.info('Started Relationship.save')
+
         if self.sender == self.receiver:
+            logger.warning('The sender and receiver of this relationship are equal')
             raise AccountsException
 
         super().save(*args, **kwargs)
+
+        logger.info('Completed Relationship.save')
 
     @classmethod
     def new_relationship(

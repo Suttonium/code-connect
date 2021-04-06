@@ -78,5 +78,11 @@ class Profile(TimeStamp):
         """
         return f'Profile instance for {self.user.email}'
 
+    @classmethod
+    def new_profile(cls, *, user: settings.AUTH_USER_MODEL):
+        return cls.objects.create(
+            user=user
+        )
+
     def get_friends(self):
         return self.friends.all()
