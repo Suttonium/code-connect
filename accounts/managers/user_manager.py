@@ -11,7 +11,14 @@ class UserManager(BaseUserManager):
     implemented in the UserQuerySet class.
     """
     
-    def create_user(self, *, username: str, email: str, password: str, **extra_fields: dict):
+    def create_user(
+        self,
+        *,
+        username: str,
+        email: str,
+        password: str,
+        **extra_fields: dict
+    ):
         """
         Parameters:
             username       -> the username used during user creation
@@ -38,7 +45,14 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, *, username: str, email: str, password: str, **extra_fields):
+    def create_superuser(
+        self,
+        *,
+        username: str,
+        email: str,
+        password: str,
+            **extra_fields: dict
+    ):
         """
         Parameters:
             username       -> the username used during user creation

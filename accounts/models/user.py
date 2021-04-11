@@ -95,4 +95,12 @@ class User(AbstractUser):
         )
 
     def authenticate(self, *, password: str) -> models.base.ModelBase:
+        """
+        Parameters:
+            password -> the password entered during authentication
+
+        Returns:
+            An instance of the User class if authentication tests passed
+            successfully
+        """
         return self.check_password(password) and not self.is_banned and self.is_active
