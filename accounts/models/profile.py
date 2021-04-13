@@ -47,13 +47,13 @@ class Profile(TimeStamp):
     )
 
     friends = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        'self',
         related_name='friends_list',
         blank=True
     )
 
     blocks = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        'self',
         related_name='blocked_users',
         blank=True
     )
