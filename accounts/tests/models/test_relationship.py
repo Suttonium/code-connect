@@ -98,4 +98,25 @@ class TestRelationship(TestCase):
         else:
             logger.info(f'Completed Test #3 - {self._test_name}')
 
+    def test_status_is_SENT_by_default(self) -> None:
+        """
+        Parameters:
+            None
 
+        Returns:
+            None
+
+        The test_status_is_SENT_by_default method checks to assure the
+        status field of the Relationship model is SENT by default.
+        """
+        self._test_name = "Test Status is SENT by Default"
+        try:
+            self.assertEqual(
+                self._test_relationship.status,
+                Relationship.RequestOptions.SENT
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #4 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #4 - {self._test_name}')
