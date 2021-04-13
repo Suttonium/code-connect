@@ -10,6 +10,7 @@ faker = Factory.create()
 
 class RelationshipFactory(factory.django.DjangoModelFactory):
 
+
     class Meta:
         model                = Relationship
         django_get_or_create = (
