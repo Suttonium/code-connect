@@ -160,9 +160,28 @@ class Relationship(TimeStamp):
         self.status = self.RequestOptions.VIEWED
 
     def cancel(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The cancel method ends the friend request by removing it from the database.
+        """
         self.delete()
 
     def update_status(self, *, status: RequestOptions) -> None:
+        """
+        Parameters:
+            status -> the desired status of the friend request
+
+        Returns:
+            None
+
+        The update_status method takes in a RequestOptions enumerated
+        value and updates the relationship's status accordingly.
+        """
         logger.info('Started Relationship.update_status')
 
         if status == self.RequestOptions.REJECTED:
