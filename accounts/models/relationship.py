@@ -97,12 +97,35 @@ class Relationship(TimeStamp):
         sender: settings.AUTH_USER_MODEL,
         receiver: settings.AUTH_USER_MODEL
     ):
+        """
+        Parameters:
+            sender   -> The user initiating the friend request
+            receiver -> The user receiving the friend request
+
+        Returns:
+            A new Relationship instance representing the friend
+            request between the sender and the receiver.
+
+        The new_relationship class method is used to keep class-level
+        instance creation inside the class itself.
+        """
         return cls.objects.create(
             sender=sender,
             receiver=receiver
         )
     
     def accept(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The accept method is used to finalize a friend request between
+        two users and it also removes the request from the database after
+        acceptance.
+        """
         self.sender.friends.add(self.receiver)
         self.receiver.friends.add(self.sender)
 
@@ -110,8 +133,46 @@ class Relationship(TimeStamp):
         self.delete()
 
     def reject(self) -> None:
-        self.status = RequestOptions.REJECTED
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The reject method is used to showcase that a friend request
+        was rejected by a user.
+        """
+        self.status = self.RequestOptions.REJECTED
         self.save()
+
+    def marked_as_viewed(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The marked_as_viewed method designates that a friend request
+        was viewed by the recipient.
+        """
+        self.status = self.RequestOptions.VIEWED
 
     def cancel(self) -> None:
         self.delete()
+
+    def update_status(self, *, status: RequestOptions) -> None:
+        logger.info('Started Relationship.update_status')
+
+        if status == self.RequestOptions.REJECTED:
+            self.reject()
+        elif status == self.RequestOptions.VIEWED:
+            self.marked_as_viewed()
+        elif status == self.RequestOptions.SENT:
+            # this should not be used because SENT
+            # is the default status
+            pass
+
+        logger.info('Completed Relationship.update_status')
+

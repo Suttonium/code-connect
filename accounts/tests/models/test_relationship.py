@@ -120,3 +120,57 @@ class TestRelationship(TestCase):
             self.fail()
         else:
             logger.info(f'Completed Test #4 - {self._test_name}')
+
+    def test_updating_status_to_REJECTED(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The test_updating_status_to_REJECTED assures the status of a
+        relationship can be properly transitioned to REJECTED.
+        """
+        self._test_name = "Test Updating Relationship status to REJECTED"
+        try:
+            self._test_relationship.update_status(
+                status=Relationship.RequestOptions.REJECTED
+            )
+
+            self.assertEqual(
+                self._test_relationship.status,
+                Relationship.RequestOptions.REJECTED
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #5 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #5 - {self._test_name}')
+
+    def test_updating_status_to_VIEWED(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The test_updating_status_to_VIEWED method assures the status
+        of a relationship can be properly transitioned to VIEWED.
+        """
+        self._test_name = "Test Updating Relationship status to VIEWED"
+        try:
+            self._test_relationship.update_status(
+                status=Relationship.RequestOptions.VIEWED
+            )
+
+            self.assertEqual(
+                self._test_relationship.status,
+                Relationship.RequestOptions.VIEWED
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #6 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #6 - {self._test_name}')
