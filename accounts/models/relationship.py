@@ -164,7 +164,6 @@ class Relationship(TimeStamp):
         was rejected by a user.
         """
         self.status = self.RequestOptions.REJECTED
-        self.save()
 
     def marked_as_viewed(self) -> None:
         """
@@ -216,6 +215,8 @@ class Relationship(TimeStamp):
             # this should not be used because SENT
             # is the default status
             pass
+
+        self.save()
 
         logger.info('Completed Relationship.update_status')
 
