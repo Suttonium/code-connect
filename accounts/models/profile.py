@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import uuid
 
 from django.conf              import settings
@@ -75,14 +77,41 @@ class Profile(TimeStamp):
         Returns:
             The desired string representation of the model for viewing
             in the database.
+
+        The __str__ dunder method outputs the desired string representation
+        of the Profile instance.
         """
         return f'Profile instance for {self.user.email}'
 
     @classmethod
-    def new_profile(cls, *, user: settings.AUTH_USER_MODEL):
+    def new_profile(
+        cls,
+        *,
+        user: settings.AUTH_USER_MODEL
+    ) -> Profile:
+        """
+        Parameters:
+            user -> the user who will own the new Profile instance
+
+        Returns:
+            An instance of the Profile class connected to the designated
+            user.
+
+        The new_profile class method handles the creation of a new Profile instance
+        and keeps the creation logic inside the class itself.
+        """
         return cls.objects.create(
             user=user
         )
 
     def get_friends(self):
+        """
+        Paramters:
+            None
+
+        Returns:
+            None
+
+        The get_friends method returns the friends list of the current user.
+        """
         return self.friends.all()

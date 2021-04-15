@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import uuid
 
@@ -58,10 +60,17 @@ class User(AbstractUser):
         Returns:
             The desired string representation of the model for viewing
             in the database.
+
+        The __str__ dunder method outputs the desired string representation
+        of the User instance.
         """
         return self.email
 
-    def save(self, *args, **kwargs) -> None:
+    def save(
+        self,
+        *args: tuple,
+        **kwargs: dict
+    ) -> None:
         """
         Parameters:
             *args    -> multiple arguments passed by the django internals
@@ -69,6 +78,10 @@ class User(AbstractUser):
 
         Returns:
             None
+
+        The save method will save the current user into the database and
+        also create a new Profile instance for the user if one does not
+        currently exist.
         """
         logger.info('Started User.save')
 
@@ -80,21 +93,33 @@ class User(AbstractUser):
         logger.info('Completed User.save')
 
     @classmethod
-    def new_user(cls, *, email: str, username: str) -> models.base.ModelBase:
+    def new_user(
+        cls,
+        *,
+        email: str,
+        username: str
+    ) -> User:
         """
         Parameters:
             email    -> desired email for user creation
             username -> desired username for user creation
 
         Returns:
-            An instance of this class create through an ORM method call
+            An instance of this class create through an ORM method call.
+
+        The new_user method will create a new User instance while keeping the
+        creation manager logic inside the class itself.
         """
         return cls.objects.create(
             email=email,
             username=username,
         )
 
-    def authenticate(self, *, password: str) -> models.base.ModelBase:
+    def authenticate(
+        self,
+        *,
+        password: str
+    ) -> User:
         """
         Parameters:
             password -> the password entered during authentication
@@ -102,5 +127,9 @@ class User(AbstractUser):
         Returns:
             An instance of the User class if authentication tests passed
             successfully
+
+        The authenticate method is used during user authentication to assure
+        the user enters the correct information, and also assures the user is
+        allowed to enter the application.
         """
         return self.check_password(password) and not self.is_banned and self.is_active

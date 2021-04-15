@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import uuid
 
@@ -65,6 +67,9 @@ class Relationship(TimeStamp):
         Returns:
             The desired string representation of the model for viewing
             in the database.
+
+        The __str__ dunder method outputs the desired string representation
+        of the Relationship instance.
         """
         return f'Friend Request between {self.sender} and {self.receiver}'
         
@@ -79,7 +84,22 @@ class Relationship(TimeStamp):
         verbose_name        = _('Relationship')
         verbose_name_plural = _('Relationships')
 
-    def save(self, *args: tuple, **kwargs: dict):
+    def save(
+        self,
+        *args: tuple,
+        **kwargs: dict
+    ) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The save method saves the current relationship to the database and
+        also assures that the sender and receiver of the instance cannot be
+        the same user.
+        """
         logger.info('Started Relationship.save')
 
         if self.sender == self.receiver:
@@ -96,7 +116,7 @@ class Relationship(TimeStamp):
         *, 
         sender: settings.AUTH_USER_MODEL,
         receiver: settings.AUTH_USER_MODEL
-    ):
+    ) -> Relationship:
         """
         Parameters:
             sender   -> The user initiating the friend request
@@ -171,7 +191,11 @@ class Relationship(TimeStamp):
         """
         self.delete()
 
-    def update_status(self, *, status: RequestOptions) -> None:
+    def update_status(
+        self,
+        *,
+        status: RequestOptions
+    ) -> None:
         """
         Parameters:
             status -> the desired status of the friend request
