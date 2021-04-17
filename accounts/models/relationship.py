@@ -141,7 +141,7 @@ class Relationship(TimeStamp):
         *,
         sender: settings.AUTH_USER_MODEL,
         receiver: settings.AUTH_USER_MODEL
-    ) -> QuerySet:
+    ) -> QuerySet[Relationship]:
         """
         The get_relationship class methods performs a filter of the
         Relationship instances by using the unique combination of
