@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.test import TestCase
 from typing      import Optional
 
@@ -174,3 +175,35 @@ class TestRelationship(TestCase):
             self.fail()
         else:
             logger.info(f'Completed Test #6 - {self._test_name}')
+
+    def test_cancel_relationship(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The test_cancel_relationship method simulates the cancellation of
+        a friendship request and asserts that the instance no longer exists.
+        """
+        self._test_name = "Test Cancel Relationship"
+        try:
+            sender  : settings.AUTH_USER_MODEL = self._test_relationship.sender
+            receiver: settings.AUTH_USER_MODEL = self._test_relationship.receiver
+
+            self._test_relationship.cancel()
+
+            self.assertFalse(
+                Relationship.get_relationship(
+                    sender=sender,
+                    receiver=receiver
+                ).exists()
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #7 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #7 - {self._test_name}')
+
+

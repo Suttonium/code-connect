@@ -5,6 +5,7 @@ import uuid
 
 from django.conf              import settings
 from django.db                import models
+from django.db.models.query   import QuerySet
 from django.utils.translation import ugettext_lazy as _
 
 from accounts.exception     import AccountsException
@@ -133,6 +134,23 @@ class Relationship(TimeStamp):
             sender=sender,
             receiver=receiver
         )
+
+    @classmethod
+    def get_relationship(
+        cls,
+        *,
+        sender: settings.AUTH_USER_MODEL,
+        receiver: settings.AUTH_USER_MODEL
+    ) -> QuerySet:
+        """
+        The get_relationship class methods performs a filter of the
+        Relationship instances by using the unique combination of
+        sender and receiver dictated in the static Meta class.
+        """
+        return cls.objects.filter(
+            sender=sender,
+            receiver=receiver
+        )
     
     def accept(self) -> None:
         """
@@ -165,7 +183,7 @@ class Relationship(TimeStamp):
         """
         self.status = self.RequestOptions.REJECTED
 
-    def marked_as_viewed(self) -> None:
+    def mark_as_viewed(self) -> None:
         """
         Parameters:
             None
@@ -210,7 +228,7 @@ class Relationship(TimeStamp):
         if status == self.RequestOptions.REJECTED:
             self.reject()
         elif status == self.RequestOptions.VIEWED:
-            self.marked_as_viewed()
+            self.mark_as_viewed()
         elif status == self.RequestOptions.SENT:
             # this should not be used because SENT
             # is the default status
