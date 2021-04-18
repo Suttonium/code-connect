@@ -164,8 +164,8 @@ class Relationship(TimeStamp):
         two users and it also removes the request from the database after
         acceptance.
         """
-        self.sender.friends.add(self.receiver)
-        self.receiver.friends.add(self.sender)
+        self.sender.profile.friends.add(self.receiver.profile)
+        self.receiver.profile.friends.add(self.sender.profile)
 
         # remove the request from the database because it has been accepted
         self.delete()

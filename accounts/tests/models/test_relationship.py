@@ -206,4 +206,21 @@ class TestRelationship(TestCase):
         else:
             logger.info(f'Completed Test #7 - {self._test_name}')
 
+    def test_accepting_relationship(self) -> None:
+        self._test_name = "Test Accepting Relationship"
+        try:
+            self._test_relationship.accept()
+
+            sender_profile  : Profile = self._test_relationship.sender.profile
+            receiver_profile: Profile = self._test_relationship.receiver.profile
+
+            self.assertTrue(
+                sender_profile.friends.count(),
+                1
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #8 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #8 - {self._test_name}')
 
