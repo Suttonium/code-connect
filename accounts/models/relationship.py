@@ -8,8 +8,10 @@ from django.db                import models
 from django.db.models.query   import QuerySet
 from django.utils.translation import ugettext_lazy as _
 
-from accounts.exception     import AccountsException
-from core.models.time_stamp import TimeStamp
+from accounts.exception                       import AccountsException
+from accounts.managers.relationship_manager   import RelationshipManager
+from accounts.querysets.relationship_queryset import RelationshipQuerySet
+from core.models.time_stamp                   import TimeStamp
 
 logger = logging.getLogger('accounts')
 
@@ -59,6 +61,8 @@ class Relationship(TimeStamp):
         choices=RequestOptions.choices,
         default=RequestOptions.SENT
     )
+
+    objects = RelationshipManager()
 
     def __str__(self) -> str:
         """
@@ -112,7 +116,7 @@ class Relationship(TimeStamp):
         logger.info('Completed Relationship.save')
 
     @classmethod
-    def new_relationship(
+    def create_relationship(
         cls,
         *, 
         sender: settings.AUTH_USER_MODEL,
@@ -130,7 +134,7 @@ class Relationship(TimeStamp):
         The new_relationship class method is used to keep class-level
         instance creation inside the class itself.
         """
-        return cls.objects.create(
+        return cls.objects.create_relationship(
             sender=sender,
             receiver=receiver
         )
@@ -141,13 +145,13 @@ class Relationship(TimeStamp):
         *,
         sender: settings.AUTH_USER_MODEL,
         receiver: settings.AUTH_USER_MODEL
-    ) -> QuerySet[Relationship]:
+    ) -> RelationshipQuerySet:
         """
         The get_relationship class methods performs a filter of the
         Relationship instances by using the unique combination of
         sender and receiver dictated in the static Meta class.
         """
-        return cls.objects.filter(
+        return cls.objects.find(
             sender=sender,
             receiver=receiver
         )
@@ -164,8 +168,8 @@ class Relationship(TimeStamp):
         two users and it also removes the request from the database after
         acceptance.
         """
-        self.sender.profile.friends.add(self.receiver.profile)
-        self.receiver.profile.friends.add(self.sender.profile)
+        self.sender.profile.add_friend(profile=self.receiver.profile)
+        self.receiver.profile.add_friend(profile=self.sender.profile)
 
         # remove the request from the database because it has been accepted
         self.delete()

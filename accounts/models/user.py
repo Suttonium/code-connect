@@ -88,16 +88,17 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
         
         if not hasattr(self, 'profile'):
-            Profile.new_profile(user=self)
+            Profile.create_profile(user=self)
 
         logger.info('Completed User.save')
 
     @classmethod
-    def new_user(
+    def create_user(
         cls,
         *,
         email: str,
-        username: str
+        username: str,
+        password:str
     ) -> User:
         """
         Parameters:
@@ -105,14 +106,15 @@ class User(AbstractUser):
             username -> desired username for user creation
 
         Returns:
-            An instance of this class create through an ORM method call.
+            An instance of this class created through an ORM method call.
 
         The new_user method will create a new User instance while keeping the
         creation manager logic inside the class itself.
         """
-        return cls.objects.create(
+        return cls.objects.create_user(
             email=email,
             username=username,
+            password=password
         )
 
     def authenticate(

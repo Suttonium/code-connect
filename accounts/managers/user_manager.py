@@ -10,6 +10,9 @@ class UserManager(BaseUserManager):
     within this object will call a related helper function
     implemented in the UserQuerySet class.
     """
+
+    def get_queryset(self) -> UserQuerySet:
+        return UserQuerySet(self.model, using=self._db)
     
     def create_user(
         self,

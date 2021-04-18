@@ -214,9 +214,14 @@ class TestRelationship(TestCase):
             sender_profile  : Profile = self._test_relationship.sender.profile
             receiver_profile: Profile = self._test_relationship.receiver.profile
 
-            self.assertTrue(
-                sender_profile.friends.count(),
-                1
+            self.assertEqual(
+                sender_profile.get_friends().first(),
+                receiver_profile
+            )
+
+            self.assertEqual(
+                receiver_profile.get_friends().first(),
+                sender_profile
             )
         except AssertionError as error:
             logger.exception(f'Failed Test #8 - {self._test_name}')

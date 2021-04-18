@@ -6,7 +6,8 @@ from django.conf              import settings
 from django.db                import models
 from django.utils.translation import ugettext_lazy as _
 
-from core.models.time_stamp   import TimeStamp
+from accounts.managers.profile_manager import ProfileManager
+from core.models.time_stamp            import TimeStamp
 
 
 class Profile(TimeStamp):
@@ -60,6 +61,8 @@ class Profile(TimeStamp):
         blank=True
     )
 
+    objects = ProfileManager()
+
     class Meta:
         """
         Profile.Meta class to define database-specific criterion.
@@ -84,7 +87,7 @@ class Profile(TimeStamp):
         return f'Profile instance for {self.user.email}'
 
     @classmethod
-    def new_profile(
+    def create_profile(
         cls,
         *,
         user: settings.AUTH_USER_MODEL
@@ -100,7 +103,7 @@ class Profile(TimeStamp):
         The new_profile class method handles the creation of a new Profile instance
         and keeps the creation logic inside the class itself.
         """
-        return cls.objects.create(
+        return cls.objects.create_profile(
             user=user
         )
 
@@ -114,4 +117,20 @@ class Profile(TimeStamp):
 
         The get_friends method returns the friends list of the current user.
         """
-        return self.friends.all()
+        return self.friends
+
+    def add_friend(
+        self,
+        profile: Profile
+    ) -> None:
+        """
+        Parameters:
+            profile -> the profile being added to this instance's friends list.
+
+        Returns:
+            None
+
+        The add_friend method handles finalizing a friendship request.
+        """
+        self.get_friends().add(profile)
+        self.save()

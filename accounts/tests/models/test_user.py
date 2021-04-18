@@ -68,9 +68,10 @@ class TestUser(TestCase):
         equal to the user created in setUp.
         """
         try:
-            User.new_user(
+            User.create_user(
                 email=self._test_user.email,
-                username='Test User #2'
+                username='Test User #2',
+                password='test password'
             )
         except IntegrityError as error:
             logger.info('Completed Test #2 - Test Emails Are Unique')
