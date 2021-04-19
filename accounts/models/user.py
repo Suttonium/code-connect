@@ -137,9 +137,27 @@ class User(AbstractUser):
         return self.check_password(password) and not self.is_banned and self.is_active
 
     def ban(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The ban method updates the user's banned status to True.
+        """
         self.is_banned = True
         self.save()
 
     def unban(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The unban method updates the user's banned status to False.
+        """
         self.is_banned = False
         self.save()

@@ -240,3 +240,48 @@ class TestRelationship(TestCase):
         else:
             logger.info(f'Completed Test #8 - {self._test_name}')
 
+    def test_uuid_label(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The test_uuid_label method validates the label used when displaying
+        the UUID on the frontend.
+        """
+        self._test_name = 'Test UUID Label'
+        try:
+            self.assertEqual(
+                'UUID',
+                self._test_relationship._meta.get_field('uuid').verbose_name
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #9 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #9 - {self._test_name}')
+
+    def test_status_label(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The test_status_label method validates the label used when displaying
+        the Status on the frontend.
+        """
+        self._test_name = 'Test Status Label'
+        try:
+            self.assertEqual(
+                'Status',
+                self._test_relationship._meta.get_field('status').verbose_name
+            )
+        except AssertionError as error:
+            logger.exception(f'Failed Test #10 - {self._test_name}')
+            self.fail()
+        else:
+            logger.info(f'Completed Test #10 - {self._test_name}')
