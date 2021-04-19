@@ -135,3 +135,11 @@ class User(AbstractUser):
         allowed to enter the application.
         """
         return self.check_password(password) and not self.is_banned and self.is_active
+
+    def ban(self) -> None:
+        self.is_banned = True
+        self.save()
+
+    def unban(self) -> None:
+        self.is_banned = False
+        self.save()

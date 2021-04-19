@@ -16,10 +16,13 @@ class RelationshipManager(models.Manager):
         sender: settings.AUTH_USER_MODEL,
         receiver: settings.AUTH_USER_MODEL
     ):
-        return self.model(
+        relationship = self.model(
             sender=sender,
             receiver=receiver
         )
+        relationship.save()
+
+        return relationship
 
     def get_queryset(self) -> RelationshipQuerySet:
         return RelationshipQuerySet(self.model, using=self._db)

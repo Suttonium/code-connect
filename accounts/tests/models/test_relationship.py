@@ -207,6 +207,17 @@ class TestRelationship(TestCase):
             logger.info(f'Completed Test #7 - {self._test_name}')
 
     def test_accepting_relationship(self) -> None:
+        """
+        Parameters:
+            None
+
+        Returns:
+            None
+
+        The test_accepting_relationship method simulates the acception
+        of a friend request and verifies those users have been
+        successfully added to their respective friends lists.
+        """
         self._test_name = "Test Accepting Relationship"
         try:
             self._test_relationship.accept()
