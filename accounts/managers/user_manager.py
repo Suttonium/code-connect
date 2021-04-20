@@ -76,3 +76,14 @@ class UserManager(BaseUserManager):
             password=password,
             **extra_fields
         )
+
+    def find(
+        self,
+        *,
+        username: str,
+        email: str
+    ) -> UserQuerySet:
+        return self.get_queryset().find(
+            username=username,
+            email=email
+        )

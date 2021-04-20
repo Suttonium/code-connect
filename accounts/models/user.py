@@ -7,8 +7,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db                  import models
 from django.utils.translation   import ugettext_lazy as _
 
-from accounts.managers.user_manager import UserManager
-from accounts.models.profile        import Profile
+from accounts.managers.user_manager   import UserManager
+from accounts.models.profile          import Profile
+from accounts.querysets.user_queryset import UserQuerySet
 
 logger = logging.getLogger('accounts')
 
@@ -115,6 +116,18 @@ class User(AbstractUser):
             email=email,
             username=username,
             password=password
+        )
+
+    @classmethod
+    def get_user(
+        cls,
+        *,
+        username: str='',
+        email: str=''  
+    ) -> UserQuerySet:
+        return cls.objects.find(
+            username=username,
+            email=email
         )
 
     def authenticate(

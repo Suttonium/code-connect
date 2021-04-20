@@ -5,7 +5,8 @@ from django.core.handlers.wsgi    import WSGIRequest
 from django.db.models             import Q
 from typing                       import Optional
 
-from accounts.models.user import User
+from accounts.models.user             import User
+from accounts.querysets.user_queryset import UserQuerySet
 
 
 logger = logging.getLogger('accounts')
@@ -18,7 +19,11 @@ class AccountsBackend(ModelBackend):
 
     user: Optional[User] = None
     
-    def authenticate(self, request: WSGIRequest, **kwargs: dict) -> User:
+    def authenticate(
+        self,
+        request: WSGIRequest,
+        **kwargs: dict
+    ) -> User:
         """
         Parameters:
             request  -> the WSGIRequest object sent when 'submit'
@@ -35,14 +40,20 @@ class AccountsBackend(ModelBackend):
         username: str = kwargs['username']
         password: str = kwargs['password']
 
-        try:
-            user = User.objects.get(Q(username=username) | Q(email=username))
-            if not user.authenticate(password=password):
-                user = None
-        except User.DoesNotExist:
-            user = None
+        query: UserQuerySet = User.get_user(
+            username=username,
+            email=email
+        )
+
+        # if the QuerySet returned a successful find
+        if query.exists():
+            self.user = query.first()
+            if not self.user.authenticate(password=password)
+                self.user = None
+        else:
+            self.user = None
 
         logger.info('Completed AccountsBackend.authenticate method')
-        return user
+        return self.user
 
         

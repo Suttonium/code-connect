@@ -134,7 +134,7 @@ class Relationship(TimeStamp):
         The new_relationship class method is used to keep class-level
         instance creation inside the class itself.
         """
-        return cls.objects.create_relationship(
+        return cls.objects.create(
             sender=sender,
             receiver=receiver
         )
