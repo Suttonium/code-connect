@@ -143,11 +143,14 @@ class UserRegistrationForm(forms.ModelForm):
         Returns:
             A string representing the confirmed, validated password if the lengths of
             each password entry are valid and the password entries are equal.
+
+        TODO:
+            defined a set regex pattern for passwords
         """
         logger.info('Started UserRegistrationForm.clean_password_confirmation')
 
-        password              : str = self.cleaned_data['password']
-        password_confirmation : str = self.cleaned_data['password_confirmation']
+        password             : str = self.cleaned_data['password']
+        password_confirmation: str = self.cleaned_data['password_confirmation']
 
         if len(password) < 5 or len(password_confirmation) < 5:
             raise ValidationError(_('Your password must be at least X characters in length.'))
@@ -158,7 +161,10 @@ class UserRegistrationForm(forms.ModelForm):
         logger.info('Completed UserRegistrationForm.clean_password_confirmation')
         return password_confirmation
 
-    def save(self, commit: bool=True) -> User:
+    def save(
+        self,
+        commit: bool=True
+    ) -> User:
         """
         Parameters:
             commit -> a boolean that determines if the returned object should be entered into
